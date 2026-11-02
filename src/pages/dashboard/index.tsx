@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -22,7 +23,7 @@ import { cn } from '@/lib/utils'
 import { activities, statMetrics, todoItems, weeklyTrend } from '@/mock/dashboard'
 
 const statIcons: Record<string, { icon: LucideIcon; className: string }> = {
-  purchase: { icon: ShoppingCart, className: 'bg-blue-50 text-blue-600' },
+  purchase: { icon: ShoppingCart, className: 'bg-accent text-primary' },
   sales: { icon: Truck, className: 'bg-emerald-50 text-emerald-600' },
   product: { icon: PackageSearch, className: 'bg-amber-50 text-amber-600' },
   sku: { icon: Boxes, className: 'bg-violet-50 text-violet-600' },
@@ -49,14 +50,17 @@ function greeting() {
 }
 
 export default function DashboardPage() {
-  const date = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })
+  const [{ hello, date }] = useState(() => ({
+    hello: greeting(),
+    date: new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }),
+  }))
 
   return (
     <PageContainer>
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-lg font-semibold">{greeting()}，系统管理员</h1>
-          <p className="mt-0.5 text-[13px] text-muted-foreground">今天是 {date}，以下为业务概览（演示数据）</p>
+          <h1 className="text-lg font-semibold">{hello}，系统管理员</h1>
+          <p className="mt-0.5 text-sm text-muted-foreground">今天是 {date}，以下为业务概览（演示数据）</p>
         </div>
       </div>
 
@@ -68,7 +72,7 @@ export default function DashboardPage() {
             <Card key={m.key} size="sm" className="gap-0 px-4 py-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <div className="text-[13px] text-muted-foreground">{m.title}</div>
+                  <div className="text-sm text-muted-foreground">{m.title}</div>
                   <div className="mt-2 flex items-baseline gap-1">
                     <span className="text-2xl font-semibold tabular-nums">{formatNumber(m.value)}</span>
                     <span className="text-xs text-muted-foreground">{m.unit}</span>
@@ -112,7 +116,7 @@ export default function DashboardPage() {
               <Link
                 key={t.title}
                 to={t.path}
-                className="flex items-center justify-between rounded-md px-2 py-2 text-[13px] transition-colors hover:bg-muted"
+                className="flex items-center justify-between rounded-md px-2 py-2 text-sm transition-colors hover:bg-muted"
               >
                 <span>{t.title}</span>
                 <span className="flex items-center gap-1">
@@ -142,7 +146,7 @@ export default function DashboardPage() {
           <CardContent>
             <ol className="relative space-y-3.5 border-l border-dashed pl-4">
               {activities.map((a, i) => (
-                <li key={i} className="relative text-[13px]">
+                <li key={i} className="relative text-sm">
                   <span className="absolute top-1.5 -left-[20.5px] size-2 rounded-full border-2 border-card bg-primary ring-2 ring-primary/20" />
                   <p className="leading-5">
                     <span className="font-medium">{a.user}</span> {a.action}{' '}
@@ -231,7 +235,7 @@ function Shortcuts() {
         <button
           key={s.title}
           onClick={() => navigate(s.path)}
-          className="group flex items-center gap-3 rounded-lg border px-3 py-3 text-left text-[13px] transition-colors hover:border-primary/40 hover:bg-primary/5"
+          className="group flex items-center gap-3 rounded-lg border px-3 py-3 text-left text-sm transition-colors hover:border-primary/40 hover:bg-primary/5"
         >
           <span className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
             <s.icon className="size-4" />

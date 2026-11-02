@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
+import { DatePicker } from '@/components/common/date-picker'
 import { FooterBar, SectionCard } from '@/components/common/detail-layout'
 import { FormField } from '@/components/common/form-dialog'
 import { OptionSelect } from '@/components/common/option-select'
@@ -12,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { notImplemented } from '@/lib/demo'
 import { formatMoney, formatNumber, today } from '@/lib/format'
+import { closeTab } from '@/lib/tabs'
 import { products, staff, suppliers, warehouses } from '@/mock/base'
 
 interface DraftLine {
@@ -85,12 +87,15 @@ export default function PurchaseOrderCreatePage() {
       return
     }
     toast.info('演示功能：表单校验通过，订单未真实保存')
-    navigate('/purchase/orders')
+    leave()
   }
+
+  // 离开新建页时同时关闭其页签
+  const leave = () => closeTab(navigate, { path: '/purchase/orders/new', to: '/purchase/orders' })
 
   return (
     <PageContainer className="flex min-h-full flex-col">
-      <PageHeader title="新建采购订单" description="带 * 为必填项" onBack={() => navigate('/purchase/orders')} />
+      <PageHeader title="新建采购订单" description="带 * 为必填项" onBack={leave} />
 
       <SectionCard title="基本信息">
         <div className="grid grid-cols-3 gap-x-6 gap-y-4">
@@ -101,13 +106,13 @@ export default function PurchaseOrderCreatePage() {
             <OptionSelect value={form.supplierId} onChange={(v) => setField('supplierId', v)} options={supplierOptions} placeholder="请选择供应商" />
           </FormField>
           <FormField label="单据日期" required error={errors.orderDate}>
-            <Input type="date" value={form.orderDate} onChange={(e) => setField('orderDate', e.target.value)} />
+            <DatePicker value={form.orderDate} onChange={(v) => setField('orderDate', v)} invalid={Boolean(errors.orderDate)} />
           </FormField>
           <FormField label="入库仓库" required error={errors.warehouseId}>
             <OptionSelect value={form.warehouseId} onChange={(v) => setField('warehouseId', v)} options={warehouseOptions} placeholder="请选择仓库" />
           </FormField>
           <FormField label="交货日期">
-            <Input type="date" value={form.deliveryDate} min={form.orderDate} onChange={(e) => setField('deliveryDate', e.target.value)} />
+            <DatePicker value={form.deliveryDate} min={form.orderDate || undefined} onChange={(v) => setField('deliveryDate', v)} />
           </FormField>
           <FormField label="采购员">
             <OptionSelect value={form.buyer} onChange={(v) => setField('buyer', v)} options={buyerOptions} placeholder="请选择采购员" />
@@ -128,17 +133,17 @@ export default function PurchaseOrderCreatePage() {
           </Button>
         }
       >
-        <Table className="text-[13px]">
+        <Table className="text-sm">
           <TableHeader className="bg-muted/70">
             <TableRow className="hover:bg-transparent">
               <TableHead className="w-12 text-center text-muted-foreground">序号</TableHead>
               <TableHead className="w-[280px] text-muted-foreground">
-                <span className="text-destructive">*</span>商品
+                <span className="mr-1 text-destructive">*</span>商品
               </TableHead>
               <TableHead className="text-muted-foreground">规格型号</TableHead>
               <TableHead className="w-14 text-center text-muted-foreground">单位</TableHead>
               <TableHead className="w-28 text-muted-foreground">
-                <span className="text-destructive">*</span>数量
+                <span className="mr-1 text-destructive">*</span>数量
               </TableHead>
               <TableHead className="w-32 text-muted-foreground">单价（元）</TableHead>
               <TableHead className="w-32 text-right text-muted-foreground">金额</TableHead>
@@ -195,7 +200,7 @@ export default function PurchaseOrderCreatePage() {
             })}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-between border-t bg-muted/40 px-4 py-3 text-[13px]">
+        <div className="flex items-center justify-between border-t bg-muted/40 px-4 py-3 text-sm">
           <span className="text-destructive">{errors.lines}</span>
           <div className="flex gap-8">
             <span>
@@ -209,7 +214,7 @@ export default function PurchaseOrderCreatePage() {
       </SectionCard>
 
       <FooterBar extra="演示页面：保存与提交不会产生真实单据">
-        <Button variant="outline" onClick={() => navigate('/purchase/orders')}>
+        <Button variant="outline" onClick={leave}>
           取消
         </Button>
         <Button variant="outline" onClick={() => notImplemented('保存草稿')}>

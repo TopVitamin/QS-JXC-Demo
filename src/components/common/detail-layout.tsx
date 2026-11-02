@@ -16,7 +16,7 @@ export function SectionCard({
   bodyClassName?: string
 }) {
   return (
-    <section className={cn('rounded-xl bg-card ring-1 ring-foreground/10', className)}>
+    <section className={cn('panel', className)}>
       <div className="flex h-11 items-center justify-between border-b px-4">
         <h2 className="flex items-center gap-2 text-sm font-medium before:h-3.5 before:w-0.75 before:rounded-full before:bg-primary">
           {title}
@@ -38,7 +38,7 @@ export interface DescriptionItem {
 /** 描述列表：用于详情页展示“标签：值” */
 export function Descriptions({ items, columns = 3 }: { items: DescriptionItem[]; columns?: number }) {
   return (
-    <dl className="grid gap-x-8 gap-y-3 text-[13px]" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
+    <dl className="grid gap-x-8 gap-y-3 text-sm" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
       {items.map((item) => (
         <div key={item.label} className="flex min-w-0 gap-2" style={item.span ? { gridColumn: `span ${item.span}` } : undefined}>
           <dt className="w-[5.5em] shrink-0 text-muted-foreground">{item.label}</dt>
@@ -53,7 +53,7 @@ export function Descriptions({ items, columns = 3 }: { items: DescriptionItem[];
 export function FooterBar({ children, extra }: { children: ReactNode; extra?: ReactNode }) {
   return (
     <div className="sticky bottom-0 z-10 -mx-5 -mb-5 mt-auto flex items-center justify-between gap-3 border-t bg-card/95 px-5 py-3 backdrop-blur">
-      <div className="text-[13px] text-muted-foreground">{extra}</div>
+      <div className="text-sm text-muted-foreground">{extra}</div>
       <div className="flex items-center gap-2">{children}</div>
     </div>
   )

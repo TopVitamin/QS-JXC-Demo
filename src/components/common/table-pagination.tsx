@@ -44,7 +44,7 @@ export function TablePagination({ page, pageSize, total, onPageChange, onPageSiz
   }
 
   return (
-    <div className="flex items-center justify-between gap-4 text-[13px] text-muted-foreground">
+    <div className="flex items-center justify-between gap-4 text-sm text-muted-foreground">
       <span>
         共 <span className="font-medium text-foreground">{total}</span> 条记录，第 {page} / {pageCount} 页
       </span>

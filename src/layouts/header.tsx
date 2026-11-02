@@ -37,33 +37,44 @@ import { notImplemented } from '@/lib/demo'
 import { cn } from '@/lib/utils'
 import { notices as initialNotices } from '@/mock/dashboard'
 import type { RouteHandle } from '@/router'
+import { AppearancePanel } from './appearance-panel'
 
 interface HeaderProps {
   collapsed: boolean
-  onToggleSidebar: () => void
+  /** 不传时不显示折叠按钮（紧凑顶栏下折叠按钮在侧边栏底部） */
+  onToggleSidebar?: () => void
+  showBreadcrumb: boolean
+  /** 放在顶栏中的页签栏（关闭面包屑时） */
+  tabs?: ReactNode
 }
 
-export function Header({ collapsed, onToggleSidebar }: HeaderProps) {
+export function Header({ collapsed, onToggleSidebar, showBreadcrumb, tabs }: HeaderProps) {
   return (
-    <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-card px-4">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" onClick={onToggleSidebar} aria-label="折叠侧边栏">
-            {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>{collapsed ? '展开菜单' : '收起菜单'}</TooltipContent>
-      </Tooltip>
-      <Separator orientation="vertical" className="h-5!" />
-      <PageBreadcrumb />
-      <div className="ml-auto flex items-center gap-1">
+    <header className={cn('app-header flex h-(--header-h) shrink-0 items-center gap-3', tabs ? 'pr-3 pl-1' : 'px-4')}>
+      {onToggleSidebar && (
+        <>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={onToggleSidebar} aria-label="折叠侧边栏">
+                {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{collapsed ? '展开菜单' : '收起菜单'}</TooltipContent>
+          </Tooltip>
+          <Separator orientation="vertical" className="h-5! self-center!" />
+        </>
+      )}
+      {showBreadcrumb && <PageBreadcrumb />}
+      {tabs && <div className="flex min-w-0 flex-1 self-stretch">{tabs}</div>}
+      <div className="ml-auto flex shrink-0 items-center gap-1">
         <IconAction label="帮助文档" onClick={() => notImplemented('帮助文档')}>
           <CircleHelp />
         </IconAction>
+        <AppearancePanel />
         <FullscreenAction />
         <NoticeAction />
-        <Separator orientation="vertical" className="mx-2 h-5!" />
-        <UserMenu />
+        <Separator orientation="vertical" className="mx-2 h-5! self-center!" />
+        <UserMenu compact={Boolean(tabs)} />
       </div>
     </header>
   )
@@ -149,7 +160,7 @@ function NoticeAction() {
         <Button variant="ghost" size="icon" aria-label="通知消息" className="relative text-muted-foreground">
           <Bell />
           {unread > 0 && (
-            <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] leading-none text-white">
+            <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center header-badge rounded-full px-1 text-[11px] font-medium leading-none">
               {unread}
             </span>
           )}
@@ -173,7 +184,7 @@ function NoticeAction() {
             <li key={n.id} className="flex gap-2.5 border-b px-4 py-2.5 last:border-0 hover:bg-muted/60">
               <span className={cn('mt-1.5 size-1.5 shrink-0 rounded-full', n.read ? 'bg-transparent' : 'bg-primary')} />
               <div className="min-w-0">
-                <p className={cn('text-[13px] leading-5', n.read && 'text-muted-foreground')}>{n.title}</p>
+                <p className={cn('text-sm leading-5', n.read && 'text-muted-foreground')}>{n.title}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">{n.time}</p>
               </div>
             </li>
@@ -190,16 +201,17 @@ function NoticeAction() {
   )
 }
 
-function UserMenu() {
+/** 用户菜单；紧凑顶栏下只显示头像和姓名 */
+function UserMenu({ compact }: { compact: boolean }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-2 rounded-md px-1.5 py-1 outline-none hover:bg-muted">
-        <Avatar className="size-7">
+        <Avatar className={compact ? 'size-6' : 'size-7'}>
           <AvatarFallback className="bg-primary text-xs text-primary-foreground">管</AvatarFallback>
         </Avatar>
         <div className="text-left leading-tight">
-          <div className="text-[13px] font-medium">系统管理员</div>
-          <div className="text-xs text-muted-foreground">总部 · 管理员</div>
+          <div className="text-sm font-medium">系统管理员</div>
+          {!compact && <div className="text-xs text-muted-foreground">总部 · 管理员</div>}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">

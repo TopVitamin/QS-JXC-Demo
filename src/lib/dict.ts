@@ -14,7 +14,7 @@ export const enableStatusDict: Record<EnableStatus, DictItem> = {
 export const orderStatusDict: Record<OrderStatus, DictItem> = {
   draft: { label: '草稿', tone: 'gray' },
   pending: { label: '待审核', tone: 'orange' },
-  approved: { label: '已审核', tone: 'blue' },
+  approved: { label: '已审核', tone: 'primary' },
   partial: { label: '部分完成', tone: 'purple' },
   completed: { label: '已完成', tone: 'green' },
   closed: { label: '已关闭', tone: 'red' },

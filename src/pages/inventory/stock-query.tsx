@@ -139,8 +139,8 @@ export default function StockQueryPage() {
 
 function Summary({ label, value, unit, highlight }: { label: string; value: string; unit: string; highlight?: boolean }) {
   return (
-    <div className="flex items-baseline justify-between rounded-xl bg-card px-4 py-3 ring-1 ring-foreground/10">
-      <span className="text-[13px] text-muted-foreground">{label}</span>
+    <div className="flex items-baseline justify-between panel px-4 py-3">
+      <span className="text-sm text-muted-foreground">{label}</span>
       <span>
         <span className={cn('text-xl font-semibold tabular-nums', highlight && 'text-amber-600')}>{value}</span>
         <span className="ml-1 text-xs text-muted-foreground">{unit}</span>

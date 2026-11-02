@@ -30,7 +30,7 @@ export function PageHeader({ title, description, extra, actions, onBack, classNa
             <h1 className="truncate text-lg font-semibold text-foreground">{title}</h1>
             {extra}
           </div>
-          {description && <p className="mt-0.5 text-[13px] text-muted-foreground">{description}</p>}
+          {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
         </div>
       </div>
       {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}

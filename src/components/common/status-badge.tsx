@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import type { StatusTone } from '@/types'
 
 const toneClass: Record<StatusTone, string> = {
-  blue: 'bg-blue-50 text-blue-700 ring-blue-200',
+  primary: 'bg-info/10 text-info ring-info/25',
   green: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
   orange: 'bg-amber-50 text-amber-700 ring-amber-200',
   red: 'bg-red-50 text-red-700 ring-red-200',
@@ -13,7 +13,7 @@ const toneClass: Record<StatusTone, string> = {
 }
 
 const dotClass: Record<StatusTone, string> = {
-  blue: 'bg-blue-500',
+  primary: 'bg-info',
   green: 'bg-emerald-500',
   orange: 'bg-amber-500',
   red: 'bg-red-500',
@@ -30,7 +30,7 @@ interface StatusBadgeProps {
 /** 状态标签：统一的色调映射，状态文案与色调由 lib/dict.ts 维护 */
 export function StatusBadge({ tone, children, className }: StatusBadgeProps) {
   return (
-    <Badge className={cn('rounded-md font-normal ring-1 ring-inset', toneClass[tone], className)}>
+    <Badge className={cn('rounded-sm font-normal ring-1 ring-inset', toneClass[tone], className)}>
       <span className={cn('size-1.5 rounded-full', dotClass[tone])} />
       {children}
     </Badge>

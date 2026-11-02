@@ -1,6 +1,7 @@
 import { type ComponentType, lazy, type LazyExoticComponent } from 'react'
-import { createBrowserRouter, Navigate, type RouteObject } from 'react-router'
+import { createBrowserRouter, Navigate, type Params, type RouteObject } from 'react-router'
 import { DEFAULT_PATH, menuGroups } from '@/config/menu'
+import { purchaseOrders } from '@/mock/orders'
 import AdminLayout from '@/layouts/admin-layout'
 import NotFoundPage from '@/pages/not-found'
 import PlaceholderPage from '@/pages/placeholder'
@@ -8,6 +9,8 @@ import PlaceholderPage from '@/pages/placeholder'
 /** 路由附加信息：用于面包屑展示菜单之外的页面（详情、新建等） */
 export interface RouteHandle {
   title?: string
+  /** 页签标题；同一路由可打开多个页面时（如不同单据的详情），用单据编号区分 */
+  tabTitle?: (params: Params) => string | undefined
 }
 
 type Page = LazyExoticComponent<ComponentType>
@@ -44,7 +47,10 @@ const subRoutes: RouteObject[] = [
   {
     path: '/purchase/orders/:id',
     element: <PurchaseOrderDetail />,
-    handle: { title: '采购订单详情' } satisfies RouteHandle,
+    handle: {
+      title: '采购订单详情',
+      tabTitle: ({ id }) => purchaseOrders.find((o) => o.id === id)?.orderNo,
+    } satisfies RouteHandle,
   },
 ]
 

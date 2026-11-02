@@ -10,7 +10,7 @@ interface SearchPanelProps {
   onReset: () => void
 }
 
-/** 搜索筛选区域：栅格排列筛选项，右侧固定查询 / 重置按钮；回车即查询 */
+/** 搜索筛选区域：栅格排列筛选项（标签在上），右下角为查询 / 重置按钮；回车即查询 */
 export function SearchPanel({ children, onSearch, onReset }: SearchPanelProps) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -18,10 +18,10 @@ export function SearchPanel({ children, onSearch, onReset }: SearchPanelProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl bg-card p-4 ring-1 ring-foreground/10">
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-x-6 gap-y-3">
+    <form onSubmit={handleSubmit} className="panel p-4">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-x-4 gap-y-3">
         {children}
-        <div className="col-[-2/-1] flex items-center justify-end gap-2">
+        <div className="col-[-2/-1] flex items-end justify-end gap-2">
           <Button type="submit">
             <Search />
             查询
@@ -42,12 +42,12 @@ interface SearchFieldProps {
   className?: string
 }
 
-/** 单个筛选项：左侧标签 + 右侧控件 */
+/** 单个筛选项：标签在上、控件在下 */
 export function SearchField({ label, children, className }: SearchFieldProps) {
   return (
-    <div className={cn('flex items-center gap-2', className)}>
-      <Label className="w-[4.5em] shrink-0 justify-end text-[13px] font-normal text-muted-foreground">{label}</Label>
-      <div className="min-w-0 flex-1 *:w-full">{children}</div>
+    <div className={cn('flex flex-col gap-1.5', className)}>
+      <Label className="text-sm font-normal text-muted-foreground">{label}</Label>
+      <div className="min-w-0 *:w-full">{children}</div>
     </div>
   )
 }

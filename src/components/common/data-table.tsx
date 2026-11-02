@@ -45,8 +45,9 @@ export function DataTable<T>({
   const colCount = columns.length + (showIndex ? 1 : 0)
 
   return (
-    <Table className="text-[13px]">
-      <TableHeader className="bg-muted/70">
+    <Table className="text-sm">
+      {/* 表头与悬停行使用不透明的混合色，保证固定列与普通列颜色一致 */}
+      <TableHeader className="bg-(--table-head-bg)">
         <TableRow className="hover:bg-transparent">
           {showIndex && <TableHead className="w-14 text-center text-muted-foreground">序号</TableHead>}
           {columns.map((col) => (
@@ -54,9 +55,9 @@ export function DataTable<T>({
               key={col.key}
               style={{ width: col.width }}
               className={cn(
-                'h-9 px-3 text-[13px] text-muted-foreground',
+                'h-9 px-3 text-sm text-muted-foreground',
                 alignClass[col.align ?? 'left'],
-                col.fixedRight && 'sticky right-0 bg-muted shadow-[-1px_0_0_var(--border)]',
+                col.fixedRight && 'sticky right-0 bg-(--table-head-bg) shadow-[-1px_0_0_var(--border)]',
               )}
             >
               {col.title}
@@ -83,7 +84,7 @@ export function DataTable<T>({
           </TableRow>
         ) : (
           data.map((row, i) => (
-            <TableRow key={rowKey(row)} className="group">
+            <TableRow key={rowKey(row)} className="group hover:bg-(--table-row-hover)">
               {showIndex && <TableCell className="text-center text-muted-foreground">{indexOffset + i + 1}</TableCell>}
               {columns.map((col) => (
                 <TableCell
@@ -91,7 +92,7 @@ export function DataTable<T>({
                   className={cn(
                     'px-3 py-2',
                     alignClass[col.align ?? 'left'],
-                    col.fixedRight && 'sticky right-0 bg-card shadow-[-1px_0_0_var(--border)] group-hover:bg-muted',
+                    col.fixedRight && 'sticky right-0 bg-card shadow-[-1px_0_0_var(--border)] group-hover:bg-(--table-row-hover)',
                     col.className,
                   )}
                 >
@@ -118,7 +119,7 @@ interface TableCardProps {
 /** 表格容器：统一的工具栏 + 表格 + 底部（分页）结构 */
 export function TableCard({ title, actions, children, footer }: TableCardProps) {
   return (
-    <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
+    <div className="overflow-hidden panel">
       {(title || actions) && (
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="text-sm font-medium">{title}</div>

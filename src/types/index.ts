@@ -99,7 +99,7 @@ export interface StockItem {
 }
 
 /** 状态标签色调 */
-export type StatusTone = 'blue' | 'green' | 'orange' | 'red' | 'gray' | 'purple'
+export type StatusTone = 'primary' | 'green' | 'orange' | 'red' | 'gray' | 'purple'
 
 /** 下拉选项 */
 export interface Option<T extends string = string> {

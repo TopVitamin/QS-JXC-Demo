@@ -33,7 +33,7 @@ export default function PurchaseOrderDetailPage() {
     return (
       <PageContainer>
         <PageHeader title="采购订单详情" onBack={back} />
-        <div className="rounded-xl bg-card ring-1 ring-foreground/10">
+        <div className="panel">
           <EmptyState
             icon={FileSearch}
             className="py-20"
@@ -86,7 +86,7 @@ export default function PurchaseOrderDetailPage() {
         bodyClassName="p-0"
       >
         <DataTable columns={lineColumns} data={order.lines} rowKey={(l) => l.id} />
-        <div className="flex justify-end gap-8 border-t bg-muted/40 px-4 py-3 text-[13px]">
+        <div className="flex justify-end gap-8 border-t bg-muted/40 px-4 py-3 text-sm">
           <span>
             数量合计：<span className="font-medium">{formatNumber(order.totalQuantity)}</span>
           </span>

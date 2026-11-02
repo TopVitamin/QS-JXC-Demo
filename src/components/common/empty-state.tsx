@@ -18,7 +18,7 @@ export function EmptyState({ title = '暂无数据', description, icon: Icon = I
         <Icon className="size-6 text-muted-foreground" />
       </div>
       <p className="text-sm font-medium text-foreground">{title}</p>
-      {description && <p className="mt-1 max-w-md text-[13px] text-muted-foreground">{description}</p>}
+      {description && <p className="mt-1 max-w-md text-sm text-muted-foreground">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   )

@@ -15,7 +15,7 @@ export default function PlaceholderPage() {
   return (
     <PageContainer>
       <PageHeader title={title} description={`${trail?.group.title ?? ''} / ${title}`} />
-      <div className="rounded-xl bg-card ring-1 ring-foreground/10">
+      <div className="panel">
         <EmptyState
           icon={Construction}
           className="py-24"

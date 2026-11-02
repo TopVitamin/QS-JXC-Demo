@@ -9,6 +9,10 @@ export default defineConfig({
   server: {
     port: 5180,
   },
+  build: {
+    // 原型项目：主包含 React、Radix 与布局组件，略超默认 500kB 提示阈值，业务页面已按路由拆分
+    chunkSizeWarningLimit: 600,
+  },
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
